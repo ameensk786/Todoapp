@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import fetching from './Components/Action'
 import { FaSearch } from 'react-icons/fa'
@@ -50,12 +50,15 @@ const rel = todos.map((item)=>{
         return item.title
 })
 
-const felterteditems = rel.filter((item)=>{
-  return item.toLowerCase().includes(data)
-})
+const felterteditems = useMemo(()=>{
+ return  rel.filter((item)=>{
+    return item.toLowerCase().includes(data)
+  })
+
+},[rel])
 
 
-const onlyten = felterteditems.slice(0,20)
+
 
   return (
     <div>
@@ -69,7 +72,7 @@ const onlyten = felterteditems.slice(0,20)
 
       </div>
 
-    {onlyten.map((item,index)=>{
+    {felterteditems.map((item,index)=>{
       return(
         <div key={index}>
         <p>{item}</p>

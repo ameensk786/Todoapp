@@ -8,7 +8,12 @@ function App() {
 const[value,setValue]=useState('')
 const[data,setData]=useState('')
 
+
+
+
+
   const {loading,todos,error} = useSelector((data)=>data)
+
 
   const dispatch = useDispatch()
 
@@ -19,6 +24,8 @@ const[data,setData]=useState('')
     dispatch(fetching(dispatch))
 
   },[dispatch])
+
+
 
 
 
@@ -57,6 +64,20 @@ const felterteditems = useMemo(()=>{
 
 },[rel])
 
+const [currentPage, setCurrentPage] = useState(1); // current page number
+
+const itemperPage = 10
+
+const lastitem = currentPage * itemperPage;
+
+const firstitem = lastitem - itemperPage;
+
+const currentitem = felterteditems.slice(firstitem,lastitem)
+
+
+
+const totalpages = Math.ceil(felterteditems.length / itemperPage)
+const pageNumbers = Array.from({ length: totalpages }, (_, i) => i + 1);
 
 
 
@@ -72,11 +93,16 @@ const felterteditems = useMemo(()=>{
 
       </div>
 
-    {felterteditems.map((item,index)=>{
+    {currentitem.map((item,index)=>{
       return(
         <div key={index}>
         <p>{item}</p>
         </div>
+      )
+    })}
+    {pageNumbers.map((item)=>{
+      return(
+        <button onClick={()=>{setCurrentPage(item)}}>{item}</button>
       )
     })}
     
